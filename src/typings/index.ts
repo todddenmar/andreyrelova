@@ -1,3 +1,5 @@
+import { FieldValue } from "firebase/firestore";
+
 export type TPaymentMethod = "E-WALLET" | "CASH" | "BANK_TRANSFER";
 export type TPaymentDetails = {
   id: string;
@@ -48,12 +50,11 @@ export type TTime = {
 };
 
 // RSVP Types
-export type TGuestStatus = "pending" | "confirmed" | "declined";
+export type TGuestStatus = "confirmed" | "declined";
 
 export type TGuest = {
   id: string;
-  firstname: string;
-  lastname: string;
+  name: string;
   email?: string;
   phone?: string;
   status: TGuestStatus;
@@ -61,4 +62,7 @@ export type TGuest = {
   updatedAt?: string;
   notes?: string;
   companions?: number; // for +1s
+  timestamp: FieldValue;
 };
+
+export type TGuestItem = TGuest & {};

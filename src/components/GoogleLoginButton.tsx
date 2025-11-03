@@ -52,7 +52,7 @@ function GoogleLoginButton() {
       if (firebaseUser) {
         setGoogleUser({
           uid: firebaseUser.uid,
-          displayName: firebaseUser.displayName || "No name",
+          displayName: firebaseUser.displayName || "",
           email: firebaseUser.email || "No Email",
           photoURL: firebaseUser.photoURL || null,
         });
@@ -74,7 +74,7 @@ function GoogleLoginButton() {
         if (user) {
           setGoogleUser({
             uid: user.uid,
-            displayName: user.displayName || "No name",
+            displayName: user.displayName || "",
             email: user.email || "No Email",
             photoURL: user.photoURL || null,
           });

@@ -29,12 +29,15 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Label } from "../ui/label";
 import { useAppStore } from "@/lib/store";
-import { getAuth, signInAnonymously, signOut } from "firebase/auth";
+import { getAuth, signInAnonymously } from "firebase/auth";
 import LoadingComponent from "../custom-ui/LoadingComponent";
 import { TGuest, TGuestStatus } from "@/typings";
+import { serverTimestamp } from "firebase/firestore";
 
 // --- Schema ---
 const formSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters."),
+  email: z.string(),
   phone: z.string().optional(),
   companions: z.string(),
   notes: z.string().optional(),
@@ -57,6 +60,8 @@ export default function InvitationForm() {
   const form = useForm<TInvitationForm>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      name: "",
+      email: "",
       phone: "",
       companions: "0",
       notes: "",
@@ -64,17 +69,6 @@ export default function InvitationForm() {
     },
   });
 
-  useEffect(() => {
-    const auth = getAuth();
-    signOut(auth)
-      .then(() => {
-        setGoogleUser(null);
-      })
-      .catch((error) => {
-        console.log({ error });
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
   const onLogin = () => {
     if (!firstName || !lastName) {
       toast.error("Full name required");
@@ -110,17 +104,18 @@ export default function InvitationForm() {
   };
   async function onSubmit(values: TInvitationForm) {
     setIsSubmitting(true);
-    const { companions, notes, guestStatus, phone } = values;
+    const { companions, notes, guestStatus, phone, name, email } = values;
     try {
       const newGuest: TGuest = {
         id: crypto.randomUUID(),
         companions: parseInt(companions),
-        notes: notes,
+        notes: (notes || "").trim(),
         status: guestStatus as TGuestStatus,
         phone: phone,
-        firstname: firstName.trim(),
-        lastname: lastName.trim(),
+        name: name.trim(),
+        email: email.trim(),
         createdAt: new Date().toISOString(),
+        timestamp: serverTimestamp(),
       };
 
       const res = await dbSetDocument({
@@ -139,7 +134,11 @@ export default function InvitationForm() {
       toast.success("RSVP submitted successfully!");
       form.reset();
       // ✅ Redirect to success page
-      router.push("/responded");
+      if (guestStatus === "confirmed") {
+        router.push("/responded?status=confirmed");
+      } else {
+        router.push("/responded?status=declined");
+      }
     } catch (error) {
       console.error(error);
       toast.error("Something went wrong. Please try again.");
@@ -148,6 +147,11 @@ export default function InvitationForm() {
     }
   }
 
+  useEffect(() => {
+    form.setValue("name", `${googleUser?.displayName}`);
+    form.setValue("email", `${googleUser?.email}`);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [googleUser]);
   return (
     <div className="max-w-md p-6 rounded-2xl shadow-md bg-gradient-to-b from-blue-50 to-blue-100 border border-blue-100">
       <div className="text-center mb-6">
@@ -172,6 +176,43 @@ export default function InvitationForm() {
         {googleUser ? (
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-[#3e5e76]">Full Name</FormLabel>
+                    <FormControl>
+                      <Input
+                        className="bg-blue-50 border-blue-200 focus-visible:ring-blue-300"
+                        placeholder="Enter your name"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-pink-600" />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-[#3e5e76]">
+                      Email Address
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        type="email"
+                        className="bg-blue-50 border-blue-200 focus-visible:ring-blue-300"
+                        placeholder="Enter your email"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-pink-600" />
+                  </FormItem>
+                )}
+              />
               <FormField
                 control={form.control}
                 name="phone"
