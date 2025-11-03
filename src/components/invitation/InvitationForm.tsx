@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -27,10 +27,14 @@ import { dbSetDocument } from "@/lib/firebase/actions";
 import { DB_COLLECTION, DB_METHOD_STATUS } from "@/lib/config";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { Label } from "../ui/label";
+import { useAppStore } from "@/lib/store";
+import { getAuth, signInAnonymously, signOut } from "firebase/auth";
+import LoadingComponent from "../custom-ui/LoadingComponent";
+import { TGuest, TGuestStatus } from "@/typings";
 
 // --- Schema ---
 const formSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters."),
   phone: z.string().optional(),
   companions: z.string(),
   notes: z.string().optional(),
@@ -43,12 +47,16 @@ type TInvitationForm = z.infer<typeof formSchema>;
 
 export default function InvitationForm() {
   const router = useRouter();
+  const { googleUser, setGoogleUser } = useAppStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [isLoadingLogin, setIsLoadingLogin] = useState(false);
 
   const form = useForm<TInvitationForm>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
       phone: "",
       companions: "0",
       notes: "",
@@ -56,12 +64,62 @@ export default function InvitationForm() {
     },
   });
 
+  useEffect(() => {
+    const auth = getAuth();
+    signOut(auth)
+      .then(() => {
+        setGoogleUser(null);
+      })
+      .catch((error) => {
+        console.log({ error });
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const onLogin = () => {
+    if (!firstName || !lastName) {
+      toast.error("Full name required");
+      return;
+    }
+    if (!email) {
+      toast.error("Email address required");
+      return;
+    }
+
+    setIsLoadingLogin(true);
+
+    const auth = getAuth();
+    signInAnonymously(auth)
+      .then((userCredential) => {
+        const uid = userCredential.user.uid;
+        // Signed in..
+        setGoogleUser({
+          displayName: `${firstName} ${lastName}`,
+          email: email,
+          uid: uid,
+          photoURL: null,
+        });
+        toast.success("You are now signed in!");
+        setIsLoadingLogin(false);
+      })
+      .catch((error) => {
+        const errorMessage = error.message;
+        toast.error(errorMessage);
+        // ...
+        setIsLoadingLogin(false);
+      });
+  };
   async function onSubmit(values: TInvitationForm) {
     setIsSubmitting(true);
+    const { companions, notes, guestStatus, phone } = values;
     try {
-      const newGuest = {
+      const newGuest: TGuest = {
         id: crypto.randomUUID(),
-        ...values,
+        companions: parseInt(companions),
+        notes: notes,
+        status: guestStatus as TGuestStatus,
+        phone: phone,
+        firstname: firstName.trim(),
+        lastname: lastName.trim(),
         createdAt: new Date().toISOString(),
       };
 
@@ -97,8 +155,8 @@ export default function InvitationForm() {
           <Image
             src={"/images/andrey-sit.png"}
             alt="andrey-sitting"
-            width={1000}
-            height={1000}
+            width={600}
+            height={600}
             className="object-center object-cover rounded-full aspect-square w-[400px] h-[400px]"
           />
         </div>
@@ -110,123 +168,145 @@ export default function InvitationForm() {
         </p>
       </div>
 
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-4 bg-white/70 p-4 rounded-xl shadow-sm"
-        >
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-[#3e5e76]">Full Name</FormLabel>
-                <FormControl>
-                  <Input
-                    className="bg-blue-50 border-blue-200 focus-visible:ring-blue-300"
-                    placeholder="Enter your name"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="text-pink-600" />
-              </FormItem>
-            )}
-          />
+      <div className="space-y-4 bg-white/70 p-4  shadow-sm rounded-xl ">
+        {googleUser ? (
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <FormField
+                control={form.control}
+                name="phone"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-[#3e5e76]">
+                      Phone (optional)
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        className="bg-blue-50 border-blue-200 focus-visible:ring-blue-300"
+                        placeholder="Enter your phone number"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-pink-600" />
+                  </FormItem>
+                )}
+              />
 
-          <FormField
-            control={form.control}
-            name="phone"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-[#3e5e76]">
-                  Phone (optional)
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    className="bg-blue-50 border-blue-200 focus-visible:ring-blue-300"
-                    placeholder="Enter your phone number"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="text-pink-600" />
-              </FormItem>
-            )}
-          />
+              <FormField
+                control={form.control}
+                name="companions"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-[#3e5e76]">
+                      Number of Companions
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        min={0}
+                        className="bg-blue-50 border-blue-200 focus-visible:ring-blue-300"
+                        placeholder="0"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-pink-600" />
+                  </FormItem>
+                )}
+              />
 
-          <FormField
-            control={form.control}
-            name="companions"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-[#3e5e76]">
-                  Number of Companions
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    min={0}
-                    className="bg-blue-50 border-blue-200 focus-visible:ring-blue-300"
-                    placeholder="0"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="text-pink-600" />
-              </FormItem>
-            )}
-          />
+              <FormField
+                control={form.control}
+                name="notes"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-[#3e5e76]">
+                      Notes (optional)
+                    </FormLabel>
+                    <FormControl>
+                      <Textarea
+                        className="bg-blue-50 border-blue-200 focus-visible:ring-blue-300 resize-none"
+                        placeholder="Add any message or special requests"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-pink-600" />
+                  </FormItem>
+                )}
+              />
 
-          <FormField
-            control={form.control}
-            name="notes"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-[#3e5e76]">
-                  Notes (optional)
-                </FormLabel>
-                <FormControl>
-                  <Textarea
-                    className="bg-blue-50 border-blue-200 focus-visible:ring-blue-300 resize-none"
-                    placeholder="Add any message or special requests"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="text-pink-600" />
-              </FormItem>
-            )}
-          />
+              {/* Confirm / Decline Select */}
+              <FormField
+                control={form.control}
+                name="guestStatus"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-[#3e5e76]">Attendance</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger className="bg-blue-50 border-blue-200 focus-visible:ring-blue-300">
+                          <SelectValue placeholder="Select your response" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="confirmed">Will Attend</SelectItem>
+                        <SelectItem value="declined">Cannot Attend</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage className="text-pink-600" />
+                  </FormItem>
+                )}
+              />
 
-          {/* Confirm / Decline Select */}
-          <FormField
-            control={form.control}
-            name="guestStatus"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-[#3e5e76]">Attendance</FormLabel>
-                <Select onValueChange={field.onChange} value={field.value}>
-                  <FormControl>
-                    <SelectTrigger className="bg-blue-50 border-blue-200 focus-visible:ring-blue-300">
-                      <SelectValue placeholder="Select your response" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    <SelectItem value="confirmed">Will Attend</SelectItem>
-                    <SelectItem value="declined">Cannot Attend</SelectItem>
-                  </SelectContent>
-                </Select>
-                <FormMessage className="text-pink-600" />
-              </FormItem>
-            )}
-          />
+              <Button
+                type="submit"
+                className="w-full cursor-pointer bg-[#3e5e76] hover:bg-[#3e6375] text-white font-medium rounded-full"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Submitting..." : "Submit RSVP"}
+              </Button>
+            </form>
+          </Form>
+        ) : (
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 gap-4">
+              <div className="grid grid-cols-1 gap-2">
+                <Label>First Name</Label>
+                <Input
+                  value={firstName}
+                  onChange={(val) => setFirstName(val.target.value)}
+                />
+              </div>
+              <div className="grid grid-cols-1 gap-2">
+                <Label>Last Name</Label>
+                <Input
+                  value={lastName}
+                  onChange={(val) => setLastName(val.target.value)}
+                />
+              </div>
 
-          <Button
-            type="submit"
-            className="w-full bg-[#3e5e76] hover:bg-[#3e6375] text-white font-medium rounded-full"
-            disabled={isSubmitting}
-          >
-            {isSubmitting ? "Submitting..." : "Submit RSVP"}
-          </Button>
-        </form>
-      </Form>
+              <div className="grid grid-cols-1 gap-2">
+                <Label>Email Address</Label>
+                <Input
+                  value={email}
+                  onChange={(val) => setEmail(val.target.value)}
+                />
+              </div>
+            </div>
+
+            {isLoadingLogin ? (
+              <LoadingComponent />
+            ) : (
+              <Button
+                className="w-full cursor-pointer bg-[#3e5e76] hover:bg-[#3e6375] text-white font-medium rounded-full"
+                type="button"
+                onClick={onLogin}
+              >
+                Confirm Details
+              </Button>
+            )}
+          </div>
+        )}
+      </div>
 
       <p className="text-center text-sm text-[#3e5e76] mt-4">
         Thank you for sharing this moment with us 💖

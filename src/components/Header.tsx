@@ -98,7 +98,7 @@ function Header() {
     : false;
 
   return (
-    <div className="flex justify-between items-center gap-4 p-4 fixed top-0 left-0 right-0">
+    <div className="flex justify-between items-center gap-4 p-4">
       <Link href={"/"}>
         <CompanyLogo />
       </Link>

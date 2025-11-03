@@ -33,7 +33,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import ToastAlert from "./custom-ui/ToastAlert";
 import AnonymousLoginButton from "./AnonymousLoginButton";
@@ -44,7 +43,6 @@ const isInAppBrowser = () => {
 };
 function GoogleLoginButton() {
   const { setGoogleUser, googleUser, setUserData } = useAppStore();
-  const router = useRouter();
   const provider = new GoogleAuthProvider();
   const [isLoading, setIsLoading] = useState(true);
   const [isSignInOpen, setIsSignInOpen] = useState(false);
@@ -123,7 +121,6 @@ function GoogleLoginButton() {
       .then(() => {
         setGoogleUser(null);
         setUserData(null);
-        router.push("/");
         toast.success("Signed out successfully!");
       })
       .catch((error) => {

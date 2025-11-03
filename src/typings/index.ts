@@ -52,13 +52,13 @@ export type TGuestStatus = "pending" | "confirmed" | "declined";
 
 export type TGuest = {
   id: string;
-  name: string;
+  firstname: string;
+  lastname: string;
   email?: string;
   phone?: string;
   status: TGuestStatus;
   createdAt: string; // ISO date
   updatedAt?: string;
-  eventID: string;
   notes?: string;
   companions?: number; // for +1s
 };
