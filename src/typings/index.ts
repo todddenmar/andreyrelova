@@ -7,7 +7,7 @@ export type TPaymentDetails = {
   paymentProvider: string;
   qrImageURL?: string | null;
 };
-export type TRaceGender = "male" | "female";
+export type TGender = "male" | "female";
 export type TGoogleUser = {
   uid: string;
   email: string;
@@ -45,4 +45,20 @@ export type TTime = {
   hour: string;
   minute: string;
   period: TPeriod;
+};
+
+// RSVP Types
+export type TGuestStatus = "pending" | "confirmed" | "declined";
+
+export type TGuest = {
+  id: string;
+  name: string;
+  email?: string;
+  phone?: string;
+  status: TGuestStatus;
+  createdAt: string; // ISO date
+  updatedAt?: string;
+  eventID: string;
+  notes?: string;
+  companions?: number; // for +1s
 };

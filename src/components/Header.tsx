@@ -9,9 +9,10 @@ import { dbFetchCollectionWhere, dbSetDocument } from "@/lib/firebase/actions";
 import { TUser } from "@/typings";
 import { useAppStore } from "@/lib/store";
 import CompanyLogo from "./CompanyLogo";
+import { ShieldIcon } from "lucide-react";
 
 function Header() {
-  const { setUserData } = useAppStore();
+  const { setUserData, userData } = useAppStore();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
@@ -91,12 +92,24 @@ function Header() {
       console.log({ errorMessage: res.message });
     }
   };
+
+  const isAdmin = userData?.email
+    ? process.env.NEXT_PUBLIC_ADMIN_EMAIL!.includes(userData?.email)
+    : false;
+
   return (
-    <div className="flex justify-between items-center gap-4 p-4">
+    <div className="flex justify-between items-center gap-4 p-4 fixed top-0 left-0 right-0">
       <Link href={"/"}>
         <CompanyLogo />
       </Link>
-      <GoogleLoginButton />
+      <div className="flex items-center gap-4">
+        {isAdmin && (
+          <Link href={"/admin"}>
+            <ShieldIcon />
+          </Link>
+        )}
+        <GoogleLoginButton />
+      </div>
     </div>
   );
 }
