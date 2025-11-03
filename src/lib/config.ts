@@ -46,6 +46,7 @@ export const DB_METHOD_STATUS = {
 export const DB_COLLECTION = {
   USERS: "users",
   GUESTS: "guests",
+  RECEIPTS: "receipts",
 };
 
 export const OPTIONS_HOUR = Array.from({ length: 12 }, (_, index) => {
