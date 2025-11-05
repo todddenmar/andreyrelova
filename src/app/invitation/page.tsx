@@ -1,9 +1,22 @@
 // import CanvaSlideshow from "@/components/invitation/CanvaSlideshow";
 import InvitationForm from "@/components/invitation/InvitationForm";
+import { Metadata } from "next";
 import Image from "next/image";
 // import Image from "next/image";
 import React from "react";
-
+export const metadata: Metadata = {
+  title: "Andrey Amaris Relova",
+  description: "Andrey's first birthday and dedication.",
+  manifest: "/manifest.webmanifest",
+  openGraph: {
+    images:
+      "https://andreyrelova.vercel.app/_next/image?url=%2Fimages%2Fandrey-poster.jpg&w=1080&q=75",
+  },
+  icons: {
+    icon: "/icons/icon-192x192.png",
+    apple: "/icons/apple-touch-icon.png",
+  },
+};
 function InvitationPage() {
   return (
     <div className="flex flex-col items-center relative justify-center w-full p-4">
@@ -18,21 +31,6 @@ function InvitationPage() {
         <InvitationForm />
       </div>
     </div>
-    // <div className="grid grid-cols-1 md:grid-cols-2 ">
-    //   <div className="flex order-2 md:order-1 flex-col items-center justify-center p-4 bg-gradient-to-b from-white to-[#dbf2fc]">
-
-    //   </div>
-    //   <div className="order-1 md:order-2">
-    //     {/* <Image
-    //       src={"/images/andrey-banner.png"}
-    //       alt="andrey-banner"
-    //       width={1920}
-    //       height={1920}
-    //       className="object-contain h-full w-full"
-    //     /> */}
-    //     <CanvaSlideshow />
-    //   </div>
-    // </div>
   );
 }
 
