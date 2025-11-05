@@ -171,8 +171,8 @@ function GoogleLoginButton() {
           </Button>
           <Dialog open={isSignInOpen} onOpenChange={setIsSignInOpen}>
             <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Welcome to RSVP Collector</DialogTitle>
+              <DialogHeader className=" text-[#2d6fca]">
+                <DialogTitle>Welcome to Andrey&apos;s RSVP App</DialogTitle>
                 <DialogDescription>
                   Please choose how you want to sign in.
                 </DialogDescription>
@@ -183,7 +183,7 @@ function GoogleLoginButton() {
                   <AnonymousLoginButton />
                 ) : (
                   <Button
-                    className="w-full"
+                    className="w-full cursor-pointer bg-[#2d6fca] hover:bg-[#1a4cb0] text-white font-medium rounded-full"
                     onClick={() => {
                       onLogin();
                       setIsSignInOpen(false);
@@ -195,7 +195,7 @@ function GoogleLoginButton() {
 
                 <Link href={"/redirect"}>
                   <Button
-                    className="w-full"
+                    className="w-full cursor-pointer text-[#2d6fca] font-medium rounded-full"
                     variant={"link"}
                     onClick={() => {
                       setIsSignInOpen(false);
