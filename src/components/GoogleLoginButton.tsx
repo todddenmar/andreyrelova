@@ -15,6 +15,7 @@ import {
   AlertCircleIcon,
   LoaderIcon,
   LogOutIcon,
+  ShieldIcon,
   UserIcon,
 } from "lucide-react";
 import {
@@ -42,10 +43,13 @@ const isInAppBrowser = () => {
   return /FBAN|FBAV|Instagram/.test(ua);
 };
 function GoogleLoginButton() {
-  const { setGoogleUser, googleUser, setUserData } = useAppStore();
+  const { setGoogleUser, googleUser, setUserData, userData } = useAppStore();
   const provider = new GoogleAuthProvider();
   const [isLoading, setIsLoading] = useState(true);
   const [isSignInOpen, setIsSignInOpen] = useState(false);
+  const isAdmin = userData?.email
+    ? process.env.NEXT_PUBLIC_ADMIN_EMAIL!.includes(userData?.email)
+    : false;
   useEffect(() => {
     const auth = getAuth();
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
@@ -154,6 +158,14 @@ function GoogleLoginButton() {
                 {googleUser.displayName}
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
+              {isAdmin && (
+                <Link href={"/admin"}>
+                  <DropdownMenuItem>
+                    <ShieldIcon />
+                    Admin
+                  </DropdownMenuItem>
+                </Link>
+              )}
               <DropdownMenuItem onClick={onLogout}>
                 <LogOutIcon />
                 Logout

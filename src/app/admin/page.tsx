@@ -18,10 +18,17 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useAppStore } from "@/lib/store";
+import LoadingCard from "@/components/custom-ui/LoadingCard";
 function AdminPage() {
+  const { userData } = useAppStore();
+
   const [copied, setCopied] = useState(false);
   const [guests, setGuests] = useState<TGuest[]>([]);
-
+  console.log({ userData });
+  const isAdmin = userData?.email
+    ? process.env.NEXT_PUBLIC_ADMIN_EMAIL!.includes(userData?.email)
+    : false;
   const totalCompanions = guests.reduce(
     (prev, item) => prev + (item.companions || 0),
     0
@@ -56,6 +63,16 @@ function AdminPage() {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  if (!isAdmin) {
+    return (
+      <LoadingCard
+        title="Loading..."
+        description="Trying to access the admin page."
+        linkText="Go back to homepage"
+        redirectionLink="/"
+      />
+    );
+  }
   return (
     <div className="p-6">
       <div className="flex items-center justify-between mb-6">

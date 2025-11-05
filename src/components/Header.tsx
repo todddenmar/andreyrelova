@@ -93,9 +93,7 @@ function Header() {
     }
   };
 
-  const isAdmin = userData?.email
-    ? process.env.NEXT_PUBLIC_ADMIN_EMAIL!.includes(userData?.email)
-    : false;
+
 
   return (
     <div className="flex justify-between items-center gap-4 p-4">
@@ -103,11 +101,6 @@ function Header() {
         <CompanyLogo />
       </Link>
       <div className="flex items-center gap-4">
-        {isAdmin && (
-          <Link href={"/admin"}>
-            <ShieldIcon />
-          </Link>
-        )}
         <GoogleLoginButton />
       </div>
     </div>
