@@ -9,10 +9,9 @@ import { dbFetchCollectionWhere, dbSetDocument } from "@/lib/firebase/actions";
 import { TUser } from "@/typings";
 import { useAppStore } from "@/lib/store";
 import CompanyLogo from "./CompanyLogo";
-import { ShieldIcon } from "lucide-react";
 
 function Header() {
-  const { setUserData, userData } = useAppStore();
+  const { setUserData } = useAppStore();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
@@ -92,8 +91,6 @@ function Header() {
       console.log({ errorMessage: res.message });
     }
   };
-
-
 
   return (
     <div className="flex justify-between items-center gap-4 p-4">

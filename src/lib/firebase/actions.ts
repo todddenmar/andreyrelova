@@ -161,11 +161,15 @@ export const dbFetchCollectionWhere2 = async <T>(
   }
 };
 
-export const dbUpdateDocument = async <T extends DocumentData>(
-  collectionName: string,
-  id: string,
-  data: T
-) => {
+export const dbUpdateDocument = async <T extends DocumentData>({
+  collectionName,
+  id,
+  data,
+}: {
+  collectionName: string;
+  id: string;
+  data: T;
+}) => {
   try {
     const userRef = doc(db, collectionName, id);
     await updateDoc(userRef, data);

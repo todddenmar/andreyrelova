@@ -34,6 +34,7 @@ import {
 import { formatDate } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { TGuestItem } from "@/typings";
+import ResponseActionButton from "./ResponseActionButton";
 
 type GuestsTableProps = {
   guests: TGuestItem[];
@@ -167,6 +168,14 @@ export function GuestsTable({ guests }: GuestsTableProps) {
         <div className="px-3">
           {formatDate(new Date(row.getValue("createdAt")), true)}
         </div>
+      ),
+    },
+    {
+      id: "action",
+      header: "Action",
+      enableHiding: false,
+      cell: ({ row }) => (
+        <ResponseActionButton guest={row.original as TGuestItem} />
       ),
     },
   ];
