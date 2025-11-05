@@ -37,7 +37,11 @@ function OrganizerSignInPage() {
         <p className="text-muted-foreground">
           Organizers are required to login via google
         </p>
-        <Button className="w-full" type="button" onClick={onLogin}>
+        <Button
+          className="w-full cursor-pointer bg-[#2d6fca] hover:bg-[#3571c7] text-white font-medium rounded-full"
+          type="button"
+          onClick={onLogin}
+        >
           Sign In
         </Button>
       </div>

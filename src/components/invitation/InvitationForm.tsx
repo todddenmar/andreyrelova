@@ -301,7 +301,7 @@ export default function InvitationForm() {
 
               <Button
                 type="submit"
-                className="w-full cursor-pointer bg-[#2d6fca] hover:bg-[#1a4cb0] text-white font-medium rounded-full"
+                className="w-full cursor-pointer bg-[#2d6fca] hover:bg-[#3571c7] text-white font-medium rounded-full"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? "Submitting..." : "Submit RSVP"}
@@ -339,7 +339,7 @@ export default function InvitationForm() {
               <LoadingComponent />
             ) : (
               <Button
-                className="w-full cursor-pointer bg-[#2d6fca] hover:bg-[#1a4cb0] text-white font-medium rounded-full"
+                className="w-full cursor-pointer bg-[#2d6fca] hover:bg-[#3571c7] text-white font-medium rounded-full"
                 type="button"
                 onClick={onLogin}
               >

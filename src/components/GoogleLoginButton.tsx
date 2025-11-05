@@ -164,7 +164,7 @@ function GoogleLoginButton() {
       ) : (
         <div>
           <Button
-            className="w-full cursor-pointer bg-[#2d6fca] hover:bg-[#1a4cb0] text-white font-medium rounded-full"
+            className="w-full cursor-pointer bg-[#2d6fca] hover:bg-[#3571c7] text-white font-medium rounded-full"
             onClick={() => setIsSignInOpen(true)}
           >
             Sign In
@@ -183,7 +183,7 @@ function GoogleLoginButton() {
                   <AnonymousLoginButton />
                 ) : (
                   <Button
-                    className="w-full cursor-pointer bg-[#2d6fca] hover:bg-[#1a4cb0] text-white font-medium rounded-full"
+                    className="w-full cursor-pointer bg-[#2d6fca] hover:bg-[#3571c7] text-white font-medium rounded-full"
                     onClick={() => {
                       onLogin();
                       setIsSignInOpen(false);

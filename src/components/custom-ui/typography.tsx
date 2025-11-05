@@ -14,7 +14,7 @@ export function TypographyH1({ children }: TTypographyProps) {
 
 export function TypographyH2({ children }: TTypographyProps) {
   return (
-    <h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
+    <h2 className="scroll-m-20 text-[#2d6fca] border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
       {children}
     </h2>
   );

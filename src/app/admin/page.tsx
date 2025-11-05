@@ -63,7 +63,9 @@ function AdminPage() {
 
         <Button
           onClick={handleCopy}
-          className="w-full cursor-pointer bg-[#2d6fca] hover:bg-[#1a4cb0] text-white font-medium rounded-full"
+          className="cursor-pointer"
+          type="button"
+          variant={"secondary"}
         >
           {copied ? (
             <>
