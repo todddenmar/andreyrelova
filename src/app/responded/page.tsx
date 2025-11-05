@@ -1,19 +1,19 @@
 "use client";
 
+import { Suspense } from "react";
 import { PartyPopperIcon, XCircleIcon } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 
-export default function ResponsePage() {
+function ResponseContent() {
   const searchParams = useSearchParams();
   const status = searchParams.get("status"); // "confirmed" or "declined"
-
   const isConfirmed = status === "confirmed";
 
   return (
-    <div className="flex flex-col items-center justify-center bg-gradient-to-b from-blue-50 to-pink-50 p-6 text-center gap-4">
+    <div className="flex flex-col items-center justify-center bg-gradient-to-b from-blue-50 to-pink-50 p-6 text-center gap-4 ">
       {/* Icon */}
       <div className="w-full relative mx-auto flex justify-center">
         <Image
@@ -22,7 +22,7 @@ export default function ResponsePage() {
               ? "/images/happy-portrait.png"
               : "/images/sad-portrait.png"
           }
-          alt="andrey-sitting"
+          alt="response image"
           width={600}
           height={600}
           className="object-center object-cover rounded-lg w-full h-full max-w-sm"
@@ -99,5 +99,13 @@ export default function ResponsePage() {
         💧 “Every good and perfect gift is from above.” – James 1:17
       </p>
     </div>
+  );
+}
+
+export default function ResponsePage() {
+  return (
+    <Suspense fallback={<div className="text-center p-6">Loading...</div>}>
+      <ResponseContent />
+    </Suspense>
   );
 }
