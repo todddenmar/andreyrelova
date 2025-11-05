@@ -164,7 +164,9 @@ export default function InvitationForm() {
             className="object-center object-cover rounded-lg aspect-square w-[400px] h-[400px]"
           />
         </div>
-        <p className="text-[#2d6fca] text-sm">Baptism of</p>
+        <p className="text-[#2d6fca] text-lg font-semibold">
+          1st Birthday and Dedication of
+        </p>
         <h2 className="text-4xl font-main text-[#2d6fca] tracking-wide">
           Andrey Amaris Relova
         </h2>
