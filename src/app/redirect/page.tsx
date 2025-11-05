@@ -19,7 +19,7 @@ export default function SignInRedirectPage() {
   const destinationURL =
     process.env.NODE_ENV === "development"
       ? "/sign-in"
-      : "https://rsvpcollector.com/sign-in";
+      : "https://andreyrelova.vercel.app/sign-in";
   const eventSlug = Array.isArray(param.slug) ? param.slug[0] : param.slug;
 
   useEffect(() => {
