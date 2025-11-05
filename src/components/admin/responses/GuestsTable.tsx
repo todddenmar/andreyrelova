@@ -147,8 +147,42 @@ export function GuestsTable({ guests }: GuestsTableProps) {
           </Button>
         );
       },
+      cell: ({ row }) => {
+        const totalAdults = (row.getValue("companions") || 0) as number;
+        const totalKids = (row.original.kidCompanions || 0) as number;
+        return (
+          <div className="px-3 capitalize font-semibold">
+            {totalAdults > 0 && (
+              <div className="flex items-center gap-2 w-full">
+                <div className="w-[50px]">Adults:</div>
+                <div>{totalAdults}</div>
+              </div>
+            )}
+            {totalKids > 0 && (
+              <div className="flex items-center gap-2 w-full">
+                <div className="w-[50px]">Kids:</div>
+                <div>{totalKids}</div>
+              </div>
+            )}
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: "notes",
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Notes
+            <ArrowUpDown />
+          </Button>
+        );
+      },
       cell: ({ row }) => (
-        <div className="px-3 capitalize">{row.getValue("companions")}</div>
+        <div className="px-3 capitalize">{row.getValue("notes")}</div>
       ),
     },
     {

@@ -29,8 +29,12 @@ function AdminPage() {
   const isAdmin = userData?.email
     ? process.env.NEXT_PUBLIC_ADMIN_EMAIL!.includes(userData?.email)
     : false;
-  const totalCompanions = guests.reduce(
+  const totalAdultCompanions = guests.reduce(
     (prev, item) => prev + (item.companions || 0),
+    0
+  );
+  const totalKidCompanions = guests.reduce(
+    (prev, item) => prev + (item.kidCompanions || 0),
     0
   );
   const totalResponses = guests.length;
@@ -119,12 +123,24 @@ function AdminPage() {
           <OverviewCard
             title="Total Expected Guests"
             icon={<Users2Icon className="text-muted-foreground" />}
-            content={totalCompanions + confirmedGuests.length}
+            content={
+              totalAdultCompanions + totalKidCompanions + confirmedGuests.length
+            }
           />
           <OverviewCard
-            title="Total Companions"
+            title="Companions"
             icon={<Users2Icon className="text-muted-foreground" />}
-            content={totalCompanions}
+            content={
+              <div className="flex justify-between items-center gap-4 font-semibold">
+                <div>Total: {totalAdultCompanions + totalKidCompanions}</div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="text-blue-500">
+                    Adults: {totalAdultCompanions}
+                  </div>
+                  <div className="text-red-500">Kids: {totalKidCompanions}</div>
+                </div>
+              </div>
+            }
           />
         </div>
         <GuestsTable guests={guests} />

@@ -62,6 +62,7 @@ export type TGuest = {
   updatedAt?: string;
   notes?: string;
   companions?: number; // for +1s
+  kidCompanions?: number;
   timestamp: FieldValue;
 };
 

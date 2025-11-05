@@ -26,6 +26,7 @@ import { toast } from "sonner";
 import { dbUpdateDocument } from "@/lib/firebase/actions";
 import { DB_COLLECTION, DB_METHOD_STATUS } from "@/lib/config";
 import { TGuestItem, TGuestStatus } from "@/typings";
+import { Label } from "@/components/ui/label";
 
 // --- Schema ---
 const formSchema = z.object({
@@ -33,6 +34,7 @@ const formSchema = z.object({
   email: z.string(),
   phone: z.string().optional(),
   companions: z.string(),
+  kidCompanions: z.string(),
   notes: z.string().optional(),
   guestStatus: z.string({
     error: "Please select your attendance status.",
@@ -57,7 +59,8 @@ export default function UpdateResponseForm({
       name: guest.name || "",
       email: guest.email || "",
       phone: guest.phone || "",
-      companions: guest.companions?.toString(),
+      companions: guest.companions?.toString() || "0",
+      kidCompanions: guest.kidCompanions?.toString() || "0",
       notes: guest.notes || "",
       guestStatus: guest.status as TGuestStatus,
     },
@@ -65,10 +68,19 @@ export default function UpdateResponseForm({
 
   async function onSubmit(values: TInvitationForm) {
     setIsSubmitting(true);
-    const { companions, notes, guestStatus, phone, name, email } = values;
+    const {
+      kidCompanions,
+      companions,
+      notes,
+      guestStatus,
+      phone,
+      name,
+      email,
+    } = values;
     try {
       const updates = {
         companions: parseInt(companions),
+        kidCompanions: parseInt(kidCompanions),
         notes: (notes || "").trim(),
         status: guestStatus as TGuestStatus,
         phone: phone,
@@ -101,7 +113,7 @@ export default function UpdateResponseForm({
   }
 
   return (
-    <div className="max-w-md p-6 rounded-2xl shadow-md bg-white border border-blue-100">
+    <div className=" ">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
@@ -159,27 +171,49 @@ export default function UpdateResponseForm({
             )}
           />
 
-          <FormField
-            control={form.control}
-            name="companions"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="text-[#2d6fca]">
-                  Number of Companions
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    min={0}
-                    className="bg-blue-50 border-blue-200 focus-visible:ring-blue-300"
-                    placeholder="0"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage className="text-pink-600" />
-              </FormItem>
-            )}
-          />
+          <div className="grid grid-cols-1 gap-2">
+            <Label className="text-[#2d6fca]">Number of Companions</Label>
+            <div className="border rounded-lg p-4 grid grid-cols-1 gap-2">
+              <FormField
+                control={form.control}
+                name="companions"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-[#2d6fca]">Adults</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        min={0}
+                        className="bg-blue-50 border-blue-200 focus-visible:ring-blue-300"
+                        placeholder="0"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-pink-600" />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="kidCompanions"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-[#2d6fca]">Kids</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        min={0}
+                        className="bg-blue-50 border-blue-200 focus-visible:ring-blue-300"
+                        placeholder="0"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-pink-600" />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
 
           <FormField
             control={form.control}

@@ -40,6 +40,7 @@ const formSchema = z.object({
   email: z.string(),
   phone: z.string().optional(),
   companions: z.string(),
+  kidCompanions: z.string(),
   notes: z.string().optional(),
   guestStatus: z.string({
     error: "Please select your attendance status.",
@@ -64,6 +65,7 @@ export default function InvitationForm() {
       email: "",
       phone: "",
       companions: "0",
+      kidCompanions: "0",
       notes: "",
       guestStatus: "confirmed",
     },
@@ -104,11 +106,20 @@ export default function InvitationForm() {
   };
   async function onSubmit(values: TInvitationForm) {
     setIsSubmitting(true);
-    const { companions, notes, guestStatus, phone, name, email } = values;
+    const {
+      companions,
+      kidCompanions,
+      notes,
+      guestStatus,
+      phone,
+      name,
+      email,
+    } = values;
     try {
       const newGuest: TGuest = {
         id: crypto.randomUUID(),
-        companions: parseInt(companions),
+        companions: parseInt(companions || "0"),
+        kidCompanions: parseInt(kidCompanions || "0"),
         notes: (notes || "").trim(),
         status: guestStatus as TGuestStatus,
         phone: phone,
@@ -236,27 +247,49 @@ export default function InvitationForm() {
                 )}
               />
 
-              <FormField
-                control={form.control}
-                name="companions"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-[#2d6fca]">
-                      Number of Companions
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        min={0}
-                        className="bg-blue-50 border-blue-200 focus-visible:ring-blue-300"
-                        placeholder="0"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage className="text-pink-600" />
-                  </FormItem>
-                )}
-              />
+              <div className="grid grid-cols-1 gap-2">
+                <Label className="text-[#2d6fca]">Number of Companions</Label>
+                <div className="border rounded-lg p-4 grid grid-cols-1 gap-2">
+                  <FormField
+                    control={form.control}
+                    name="companions"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-[#2d6fca]">Adults</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="number"
+                            min={0}
+                            className="bg-blue-50 border-blue-200 focus-visible:ring-blue-300"
+                            placeholder="0"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage className="text-pink-600" />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="kidCompanions"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-[#2d6fca]">Kids</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="number"
+                            min={0}
+                            className="bg-blue-50 border-blue-200 focus-visible:ring-blue-300"
+                            placeholder="0"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage className="text-pink-600" />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
 
               <FormField
                 control={form.control}
