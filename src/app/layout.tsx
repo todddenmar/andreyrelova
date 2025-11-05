@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   manifest: "/manifest.webmanifest",
   openGraph: {
     images:
-      "https://andreyrelova.vercel.app/_next/image?url=%2Fimages%2Fandrey-poster.jpg&w=1080&q=75",
+      "https://andreyrelova.vercel.app/_next/image?url=%2Fimages%2Fball-down-landscape.jpeg&w=1080&q=75",
   },
   icons: {
     icon: "/icons/icon-192x192.png",
