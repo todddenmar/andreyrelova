@@ -157,22 +157,22 @@ export default function InvitationForm() {
       <div className="text-center mb-6">
         <div className="flex justify-center mb-2">
           <Image
-            src={"/images/andrey-square.png"}
+            src={"/images/andrey-poster.jpg"}
             alt="andrey-sitting"
             width={600}
             height={600}
-            className="object-center object-cover rounded-lg aspect-square w-[400px] h-[400px]"
+            className="object-center object-contain w-full"
           />
         </div>
-        <p className="text-[#2d6fca] text-lg font-semibold">
+        {/* <p className="text-[#2d6fca] text-lg font-semibold">
           1st Birthday and Dedication of
         </p>
         <h2 className="text-4xl font-main text-[#2d6fca] tracking-wide">
           Andrey Amaris Relova
-        </h2>
-        <p className="text-sm text-[#2d6fca] mt-1">
+        </h2> */}
+        {/* <p className="text-sm text-[#2d6fca] mt-1">
           We&apos;re so excited to celebrate this special day with you!
-        </p>
+        </p> */}
       </div>
 
       <div className="space-y-4 bg-white/70 p-4  shadow-sm rounded-xl ">

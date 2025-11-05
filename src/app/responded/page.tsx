@@ -49,7 +49,7 @@ function ResponseContent() {
         {isConfirmed ? (
           <>
             Thank you for confirming your attendance 💖 We&apos;re so happy to
-            celebrate this special day with you and your family.
+            celebrate this special day with you.
           </>
         ) : (
           <>
@@ -69,7 +69,7 @@ function ResponseContent() {
         {isConfirmed ? (
           <>
             <PartyPopperIcon className="w-5 h-5" />
-            <span className="text-sm">See you on Baptism Day!</span>
+            <span className="text-sm">See you on the big Day!</span>
             <PartyPopperIcon className="w-5 h-5" />
           </>
         ) : (
