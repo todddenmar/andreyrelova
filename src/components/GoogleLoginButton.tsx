@@ -53,7 +53,7 @@ function GoogleLoginButton() {
         setGoogleUser({
           uid: firebaseUser.uid,
           displayName: firebaseUser.displayName || "",
-          email: firebaseUser.email || "No Email",
+          email: firebaseUser.email || "",
           photoURL: firebaseUser.photoURL || null,
         });
       } else {
@@ -75,7 +75,7 @@ function GoogleLoginButton() {
           setGoogleUser({
             uid: user.uid,
             displayName: user.displayName || "",
-            email: user.email || "No Email",
+            email: user.email || "",
             photoURL: user.photoURL || null,
           });
         }
@@ -128,7 +128,7 @@ function GoogleLoginButton() {
       });
   };
   if (isLoading) {
-    return <LoaderIcon className="animate-spin text-orange-500" />;
+    return <LoaderIcon className="animate-spin text-[#2d6fca]" />;
   }
   return (
     <div>
@@ -136,7 +136,7 @@ function GoogleLoginButton() {
         <div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="h-[32px] flex flex-col items-center justify-center cursor-pointer hover:animate-pulse w-[32px] relative overflow-hidden rounded-full border">
+              <button className="h-[32px] flex flex-col items-center justify-center cursor-pointer hover:animate-pulse w-[32px] relative overflow-hidden rounded-full border border-[#2d6fca] bg-[#2d6fca] text-white">
                 {googleUser.photoURL ? (
                   <Image
                     src={googleUser.photoURL}
@@ -145,7 +145,7 @@ function GoogleLoginButton() {
                     height={50}
                   />
                 ) : (
-                  <UserIcon size={16} className="text-orange-500" />
+                  <UserIcon size={16} />
                 )}
               </button>
             </DropdownMenuTrigger>
@@ -163,7 +163,10 @@ function GoogleLoginButton() {
         </div>
       ) : (
         <div>
-          <Button className="w-full" onClick={() => setIsSignInOpen(true)}>
+          <Button
+            className="w-full cursor-pointer bg-[#2d6fca] hover:bg-[#1a4cb0] text-white font-medium rounded-full"
+            onClick={() => setIsSignInOpen(true)}
+          >
             Sign In
           </Button>
           <Dialog open={isSignInOpen} onOpenChange={setIsSignInOpen}>

@@ -13,20 +13,26 @@ export default function ResponsePage() {
   const isConfirmed = status === "confirmed";
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-blue-50 to-pink-50 p-6 text-center gap-4">
+    <div className="flex flex-col items-center justify-center bg-gradient-to-b from-blue-50 to-pink-50 p-6 text-center gap-4">
       {/* Icon */}
-      <Image
-        src={"/images/andrey-sit.png"}
-        alt="andrey-sitting"
-        width={600}
-        height={600}
-        className="object-center object-cover rounded-full aspect-square w-[400px] h-[400px]"
-      />
+      <div className="w-full relative mx-auto flex justify-center">
+        <Image
+          src={
+            isConfirmed
+              ? "/images/happy-portrait.png"
+              : "/images/sad-portrait.png"
+          }
+          alt="andrey-sitting"
+          width={600}
+          height={600}
+          className="object-center object-cover rounded-lg w-full h-full max-w-sm"
+        />
+      </div>
 
       {/* Title */}
       <h1
         className={`text-3xl font-semibold mb-2 ${
-          isConfirmed ? "text-[#3e5e76]" : "text-red-600"
+          isConfirmed ? "text-[#2d6fca]" : "text-red-600"
         }`}
       >
         {isConfirmed
@@ -37,18 +43,19 @@ export default function ResponsePage() {
       {/* Message */}
       <p
         className={`max-w-md mb-6 ${
-          isConfirmed ? "text-[#3e5e76]" : "text-red-600"
+          isConfirmed ? "text-[#2d6fca]" : "text-red-600"
         }`}
       >
         {isConfirmed ? (
           <>
-            Thank you for confirming your attendance 💖 We’re so happy to
+            Thank you for confirming your attendance 💖 We&apos;re so happy to
             celebrate this special day with you and your family.
           </>
         ) : (
           <>
-            We’re sorry you can’t make it 💔 Thank you for letting us know —
-            we’ll miss celebrating with you, but you’ll be in our hearts.
+            We&apos;re sorry you can&apos;t make it 💔 Thank you for letting us
+            know — we&apos;ll miss celebrating with you, but you&apos;ll be in
+            our hearts.
           </>
         )}
       </p>
@@ -56,7 +63,7 @@ export default function ResponsePage() {
       {/* Divider */}
       <div
         className={`flex items-center gap-2 mb-6 ${
-          isConfirmed ? "text-[#3e5e76]" : "text-red-600"
+          isConfirmed ? "text-[#2d6fca]" : "text-red-600"
         }`}
       >
         {isConfirmed ? (
@@ -79,7 +86,7 @@ export default function ResponsePage() {
         <Button
           className={`rounded-full px-6 py-2 text-white ${
             isConfirmed
-              ? "bg-[#3e5e76] hover:bg-[#3e6375]"
+              ? "bg-[#2d6fca] hover:bg-[#3e6375]"
               : "bg-red-600 hover:bg-red-700"
           }`}
         >
@@ -88,7 +95,7 @@ export default function ResponsePage() {
       </Link>
 
       {/* Footer Note */}
-      <p className="text-xs text-[#3e5e76] mt-6">
+      <p className="text-xs text-[#2d6fca] mt-6">
         💧 “Every good and perfect gift is from above.” – James 1:17
       </p>
     </div>

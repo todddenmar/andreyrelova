@@ -1,12 +1,22 @@
 // import CanvaSlideshow from "@/components/invitation/CanvaSlideshow";
 import InvitationForm from "@/components/invitation/InvitationForm";
+import Image from "next/image";
 // import Image from "next/image";
 import React from "react";
 
 function InvitationPage() {
   return (
-    <div className="flex flex-col items-center justify-center w-full p-4">
-      <InvitationForm />
+    <div className="flex flex-col items-center relative justify-center w-full p-4">
+      <Image
+        src={"/images/ball-down-landscape.jpeg"}
+        alt="andrey-sitting"
+        width={1080}
+        height={1080}
+        className="object-center object-cover h-full w-full absolute blur-sm z-0 inset-0"
+      />
+      <div className="relative z-10">
+        <InvitationForm />
+      </div>
     </div>
     // <div className="grid grid-cols-1 md:grid-cols-2 ">
     //   <div className="flex order-2 md:order-1 flex-col items-center justify-center p-4 bg-gradient-to-b from-white to-[#dbf2fc]">

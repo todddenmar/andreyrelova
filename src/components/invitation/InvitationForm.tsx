@@ -153,21 +153,22 @@ export default function InvitationForm() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [googleUser]);
   return (
-    <div className="max-w-md p-6 rounded-2xl shadow-md bg-gradient-to-b from-blue-50 to-blue-100 border border-blue-100">
+    <div className="max-w-md p-6 rounded-2xl shadow-md bg-white border border-blue-100">
       <div className="text-center mb-6">
         <div className="flex justify-center mb-2">
           <Image
-            src={"/images/andrey-sit.png"}
+            src={"/images/andrey-square.png"}
             alt="andrey-sitting"
             width={600}
             height={600}
-            className="object-center object-cover rounded-full aspect-square w-[400px] h-[400px]"
+            className="object-center object-cover rounded-lg aspect-square w-[400px] h-[400px]"
           />
         </div>
-        <h2 className="text-2xl font-semibold text-[#3e5e76]">
-          Andrey Relova Baptism RSVP
+        <p className="text-[#2d6fca] text-sm">Baptism of</p>
+        <h2 className="text-4xl font-main text-[#2d6fca] tracking-wide">
+          Andrey Amaris Relova
         </h2>
-        <p className="text-sm text-[#3e5e76] mt-1">
+        <p className="text-sm text-[#2d6fca] mt-1">
           We&apos;re so excited to celebrate this special day with you!
         </p>
       </div>
@@ -181,7 +182,7 @@ export default function InvitationForm() {
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-[#3e5e76]">Full Name</FormLabel>
+                    <FormLabel className="text-[#2d6fca]">Full Name</FormLabel>
                     <FormControl>
                       <Input
                         className="bg-blue-50 border-blue-200 focus-visible:ring-blue-300"
@@ -198,7 +199,7 @@ export default function InvitationForm() {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-[#3e5e76]">
+                    <FormLabel className="text-[#2d6fca]">
                       Email Address
                     </FormLabel>
                     <FormControl>
@@ -218,7 +219,7 @@ export default function InvitationForm() {
                 name="phone"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-[#3e5e76]">
+                    <FormLabel className="text-[#2d6fca]">
                       Phone (optional)
                     </FormLabel>
                     <FormControl>
@@ -238,7 +239,7 @@ export default function InvitationForm() {
                 name="companions"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-[#3e5e76]">
+                    <FormLabel className="text-[#2d6fca]">
                       Number of Companions
                     </FormLabel>
                     <FormControl>
@@ -260,7 +261,7 @@ export default function InvitationForm() {
                 name="notes"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-[#3e5e76]">
+                    <FormLabel className="text-[#2d6fca]">
                       Notes (optional)
                     </FormLabel>
                     <FormControl>
@@ -281,7 +282,7 @@ export default function InvitationForm() {
                 name="guestStatus"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-[#3e5e76]">Attendance</FormLabel>
+                    <FormLabel className="text-[#2d6fca]">Attendance</FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
                         <SelectTrigger className="bg-blue-50 border-blue-200 focus-visible:ring-blue-300">
@@ -300,7 +301,7 @@ export default function InvitationForm() {
 
               <Button
                 type="submit"
-                className="w-full cursor-pointer bg-[#3e5e76] hover:bg-[#3e6375] text-white font-medium rounded-full"
+                className="w-full cursor-pointer bg-[#2d6fca] hover:bg-[#1a4cb0] text-white font-medium rounded-full"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? "Submitting..." : "Submit RSVP"}
@@ -311,14 +312,14 @@ export default function InvitationForm() {
           <div className="space-y-4">
             <div className="grid grid-cols-1 gap-4">
               <div className="grid grid-cols-1 gap-2">
-                <Label>First Name</Label>
+                <Label className="text-[#2d6fca]">First Name</Label>
                 <Input
                   value={firstName}
                   onChange={(val) => setFirstName(val.target.value)}
                 />
               </div>
               <div className="grid grid-cols-1 gap-2">
-                <Label>Last Name</Label>
+                <Label className="text-[#2d6fca]">Last Name</Label>
                 <Input
                   value={lastName}
                   onChange={(val) => setLastName(val.target.value)}
@@ -326,7 +327,7 @@ export default function InvitationForm() {
               </div>
 
               <div className="grid grid-cols-1 gap-2">
-                <Label>Email Address</Label>
+                <Label className="text-[#2d6fca]">Email Address</Label>
                 <Input
                   value={email}
                   onChange={(val) => setEmail(val.target.value)}
@@ -338,18 +339,18 @@ export default function InvitationForm() {
               <LoadingComponent />
             ) : (
               <Button
-                className="w-full cursor-pointer bg-[#3e5e76] hover:bg-[#3e6375] text-white font-medium rounded-full"
+                className="w-full cursor-pointer bg-[#2d6fca] hover:bg-[#1a4cb0] text-white font-medium rounded-full"
                 type="button"
                 onClick={onLogin}
               >
-                Confirm Details
+                Continue
               </Button>
             )}
           </div>
         )}
       </div>
 
-      <p className="text-center text-sm text-[#3e5e76] mt-4">
+      <p className="text-center text-sm text-[#2d6fca] mt-4">
         Thank you for sharing this moment with us 💖
       </p>
     </div>
